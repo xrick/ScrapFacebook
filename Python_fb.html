@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<!-- saved from url=(0033)http://www.tsunghanyu.com/post/6/ -->
+<html lang="zh-TW" class=" js csstransitions"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Python &amp; Swift</title>
+
+    <!-- meta -->
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <!-- css -->
+    <link href="./Python_fb_files/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./Python_fb_files/ionicons.min.css">
+    <link rel="stylesheet" href="./Python_fb_files/pace.css">
+    <link rel="stylesheet" href="./Python_fb_files/custom.css">
+    <link rel="stylesheet" href="./Python_fb_files/friendly.css">
+    <!-- js -->
+    <script src="./Python_fb_files/jquery.min.js"></script>
+    <script src="./Python_fb_files/bootstrap.min.js"></script>
+    <script src="./Python_fb_files/pace.min.js"></script>
+    <script src="./Python_fb_files/modernizr.custom.js"></script>
+<style id="style-1-cropbar-clipper">/* Copyright 2014 Evernote Corporation. All rights reserved. */
+.en-markup-crop-options {
+    top: 18px !important;
+    left: 50% !important;
+    margin-left: -100px !important;
+    width: 200px !important;
+    border: 2px rgba(255,255,255,.38) solid !important;
+    border-radius: 4px !important;
+}
+
+.en-markup-crop-options div div:first-of-type {
+    margin-left: 0px !important;
+}
+</style></head>
+
+<body class="  pace-done"><div class="pace  pace-inactive"><div class="pace-progress" data-progress-text="100%" data-progress="99" style="width: 100%;">
+  <div class="pace-progress-inner"></div>
+</div>
+<div class="pace-activity"></div></div>
+<div class="container">
+    <header id="site-header">
+        <div class="row">
+            <div class="col-md-4 col-sm-5 col-xs-8">
+                <div class="logo">
+                    <h1><a href="http://www.tsunghanyu.com/"><b>Python</b> &amp; Swift</a></h1>
+                </div>
+            </div><!-- col-md-4 -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+    </header>
+</div>
+
+<div class="content-body">
+    <div class="container">
+        <div class="row">
+            <main class="col-md-8">
+                
+    <article class="post post-1">
+        <header class="entry-header">
+            <h1 class="entry-title">Python爬蟲擷取fb粉絲專頁資訊</h1>
+            <div class="entry-meta">
+                <span class="post-category"><a href="http://www.tsunghanyu.com/category/4/">Web Crawler </a></span>
+                <span class="post-date">
+                    <a href="http://www.tsunghanyu.com/post/6/#">
+                    <time class="entry-date" datetime="2017年7月8日 02:55">2017年7月8日 02:55</time>
+                    </a>
+                </span>
+                <span class="post-author"><a href="http://www.tsunghanyu.com/post/6/#">TsungHan </a></span>
+                <span class="comments-link"><a href="http://www.tsunghanyu.com/post/6/#"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span> 0  </a></span>
+                 <span class="views-count"><a href="http://www.tsunghanyu.com/post/6/#"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> 58</a></span>
+            </div>
+        </header>
+        <div class="entry-content clearfix">
+            <p>這次我們要使用<a href="https://developers.facebook.com/docs/graph-api?locale=zh_TW" style="color:green;">Facebook Graph API</a>來抓取資料，使用起來並不會太難，我們要搜集的資料為<a href="https://www.facebook.com/myntpc/" style="color: green;">新北市粉絲專頁</a>中每篇文章中的 <code>發文時間</code>、<code>文章內容</code>、<code>分享內容</code>、<code>留言數</code>、<code>按讚數</code>、<code>分享數</code>，實際上也不是真的去爬網頁，就是 Call Api 罷了！</p>
+<p><br></p>
+<h3 id="_1">取得粉絲專頁存取權杖</h3>
+<p>首先進入 <a href="https://developers.facebook.com/tools/explorer/" style="color: green;">Graph API Explorer</a> ，如下圖點擊取得粉絲專頁存取權杖。</p>
+<p><img src="./Python_fb_files/EsiEUBf_yYr5-hOrUOKTmvYJA5p5T99u6dindsL4Jz8MuLgZzD0uwb-L4w4qAF71UKMzMY2VFwh3SQekTZ4T9M_mo2feMEFy-yl4jg2pNsPw6dO3WVt8c1QxaZMtzeNNXGYh1AjtT-Buv96BZm5G7Pi4W0BUwCzfblkigOu2ltNVV569DFBBU8byvNoNfffOciqW9e9rtvxmBACai4H_TzQ74pqXFelPfcbNAV5EbqiI4hYtmnez4zAvfceemPC" class="col-md-12 col-sm-12 col-xs-12" alt="" align="center/"></p>
+<p>.</p>
+<hr>
+<p><br></p>
+<h3 id="id">取得粉絲專頁的id</h3>
+<p>將<a href="https://www.facebook.com/myntpc/" style="color: green;">新北市粉絲專頁</a>網址貼上並且提交，我們就會取得粉絲專頁的id。
+<img src="./Python_fb_files/CjMn4ubQkVBQVpJCbSLHcVyA6YxFhcZRv2qzstzmWymKPzT0MIcCMbBjgyKpse-5SnQyEa9Tde_EP9DmnKHrUUePD0zK7sNDJEoa3wju3PNlK3CvECh81nn-10TmJaptXuKGF-RIhCEBtfLoVpUIvNWZ4a387XQnuG_q0vxpwGMKmXzJ-T9b0EE1UNniqI5veu-CDgqaCnpY2tvSN3xbmk2nvvwV-uBvPkhwTO6TWLnY-uO_CSYads90flu06Xv" class="col-md-12 col-sm-12 col-xs-12" alt="" align="center"></p>
+<p>.</p>
+<hr>
+<p><br></p>
+<h3 id="_2">取得粉絲專頁的每一篇文章</h3>
+<p>這裡使用剛剛拿到的粉絲專頁id <code>218558484828205/posts</code> ，這樣我們就可以取得每一篇文章（發文時間、文章內容、分享內容、文章id）。<br>現在我們只剩下 <code>留言數</code>、<code>按讚數</code>、<code>分享數</code> 還沒取得下一步我們會使用文章id來取得這些資料。</p>
+<p><img src="./Python_fb_files/_2rFVEPHvlIFYWHHQnBCzOdvdlr4pFN7suZYJ3zLYqt-JMJtJRf0UNyE08EaJuAHJefK8pXEH8nc14h-b73mxMGkixLMv0MN1G3_tVuxmNatiYsX0vqMe7c0zyOkoeHODWlAg1EfhPpJ2jkjoe7pwmZeiyqUHwUy9lMjJEeHGvsI3XsV3daufdgTgEg-mzOELQvHDhMfOt6b5cjwcBIoxDndXDkv8n-8lzc2fp9LDY9SCRL8y7efxRe0CI2Z13c" class="col-md-12 col-sm-12 col-xs-12" alt="" align="center"></p>
+<p>.</p>
+<hr>
+<p><br></p>
+<h3 id="_3">取得文章的 留言數、按讚數、分享數</h3>
+<p>使用上個步驟的文章id來取得 <code>留言數</code>、<code>按讚數</code>、<code>分享數</code> <br>除了文章id還需要帶入條件</p>
+<div class="codehilite"><pre><span></span>fields=comments.limit(0).summary(true),likes.limit(0).summary(true), shares
+</pre></div>
+
+
+<p><img src="./Python_fb_files/8ALfscy-oXf2L-U3gMfjCoQ_Sta2Y7a6LJ7TrIlXA6XY3rUQLKQelZ9YnV9o7Pxp3NP8xavdEjNlOG9zEXQjbsj67giHrpuvHFAvyk7DGyfU2ytk16WJkDa2iG5E6KIidmdWMnDEkjpqhvZm2d51Gmq8WKIXjiPpr5ZXbGJ4Ysa2u5MLuHI3yNXKzposSihL0Zo04tzDAMbIPKXLqwRurK8gYFgHhpnygJeAn5VITCA5mSYDcvGj2Ny1yjYc9MT" class="col-md-12 col-sm-12 col-xs-12" alt="" align="center"></p>
+<p>.</p>
+<hr>
+<p><br></p>
+<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">dateutil.parser</span> <span class="kn">import</span> <span class="n">parse</span>
+
+<span class="c1"># 在Graph API Exploer 取得 token</span>
+<span class="n">token</span> <span class="o">=</span> <span class="s1">'EAACEdEose0cBAINC2yFDJFdR0I6RZBOuUPhXLG4MNh7okGltHuf6QcjbgzyygdBQgecaviqADZAVXm4ySl3bvAeooke7EMWwZB1IBdZAj9pvx35SMhjMxwyfSb9zG4fNAVnkVVva3NlqsYvDiH0ZAHIEuTJos8kceEqMnan4TE8CXS7QZAXeuAGZCQyHs6q41UZD'</span>
+
+<span class="c1"># 在Graph API Exploer 取得粉絲專頁的id</span>
+<span class="n">fp_id</span> <span class="o">=</span> <span class="s1">'218558484828205'</span>
+
+<span class="c1"># 要搜集的資料</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'發文時間'</span><span class="p">,</span> <span class="s1">'文章內容'</span><span class="p">,</span> <span class="s1">'分享內容'</span><span class="p">,</span> <span class="s1">'留言數'</span><span class="p">,</span> <span class="s1">'按讚數'</span><span class="p">,</span> <span class="s1">'分享數'</span><span class="p">]</span>
+
+<span class="c1"># 用來保存每篇文章的資料</span>
+<span class="n">posts</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># 將粉絲專頁的 id 及 token 帶入並取得 response</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'https://graph.facebook.com/v2.9/{}/posts?limit=20&amp;access_token={}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fp_id</span><span class="p">,</span> <span class="n">token</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">post</span> <span class="ow">in</span> <span class="n">res</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">'data'</span><span class="p">]:</span>
+
+    <span class="c1"># 透過文章的id來取得 留言數、按讚數、分享數</span>
+    <span class="n">p_res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="s1">'https://graph.facebook.com/v2.9/{}?'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">post</span><span class="p">[</span><span class="s1">'id'</span><span class="p">])</span> <span class="o">+</span>
+        <span class="s1">'fields=comments.limit(0).summary(true),likes.limit(0).summary(true), shares&amp;'</span> <span class="o">+</span>
+        <span class="s1">'access_token={}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">token</span><span class="p">))</span>
+
+    <span class="c1"># 留言數</span>
+    <span class="k">if</span> <span class="s1">'comments'</span> <span class="ow">in</span> <span class="n">p_res</span><span class="o">.</span><span class="n">json</span><span class="p">():</span>
+        <span class="n">comments</span> <span class="o">=</span> <span class="n">p_res</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">'comments'</span><span class="p">][</span><span class="s1">'summary'</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'total_count'</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">comments</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># 按讚數</span>
+    <span class="k">if</span> <span class="s1">'likes'</span> <span class="ow">in</span> <span class="n">p_res</span><span class="o">.</span><span class="n">json</span><span class="p">():</span>
+        <span class="n">likes</span> <span class="o">=</span> <span class="n">p_res</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">'likes'</span><span class="p">][</span><span class="s1">'summary'</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'total_count'</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">likes</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># 分享數</span>
+    <span class="k">if</span> <span class="s1">'shares'</span> <span class="ow">in</span> <span class="n">p_res</span><span class="o">.</span><span class="n">json</span><span class="p">():</span>
+        <span class="n">shares</span> <span class="o">=</span> <span class="n">p_res</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">'shares'</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'count'</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">shares</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># 將資訊保存</span>
+    <span class="n">posts</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">parse</span><span class="p">(</span><span class="n">post</span><span class="p">[</span><span class="s1">'created_time'</span><span class="p">])</span><span class="o">.</span><span class="n">date</span><span class="p">(),</span>
+                  <span class="n">post</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'message'</span><span class="p">),</span>
+                  <span class="n">post</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'story'</span><span class="p">),</span>
+                  <span class="n">comments</span><span class="p">,</span>
+                  <span class="n">likes</span><span class="p">,</span>
+                  <span class="n">shares</span><span class="p">])</span>
+
+<span class="c1"># 使用 pandas 將資料輸出</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">posts</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">'fb.csv'</span><span class="p">)</span>
+</pre></div>
+        </div>
+    </article>
+    <section class="comment-area">
+        <h2>Leave a reply:</h2>
+        <p class="comment-notes">Your email address will not be published.</p>
+
+        <form action="http://www.tsunghanyu.com/comment/post/6/" method="post" class="comment-form">
+            <input type="hidden" name="csrfmiddlewaretoken" value="sOesAJqGXrXeeeuL4QULWqyRL9VawATuOGwwcl3OTWuHlFoCHDDLkGwiNo4HmZzY">
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="id_name"></label>
+                    <input id="id_name" maxlength="100" name="name" placeholder="Name*" type="text" required="">
+                    
+                </div>
+                <div class="col-md-4">
+                    <label for="id_email"></label>
+                    <input id="id_email" maxlength="255" name="email" placeholder="Email*" type="text" required="">
+                    
+                </div>
+                <div class="col-md-4">
+                    <label for="id_url"></label>
+                    <input id="id_url" maxlength="200" name="url" placeholder="Website" type="text">
+                    
+                </div>
+                <div class="col-md-12">
+                    <label for="id_text"></label>
+                    <textarea cols="40" id="id_text" name="text" rows="10" required=""></textarea>
+                    
+                    <button type="submit"><span>Post Comment</span></button>
+                </div>
+            </div>    <!-- row -->
+        </form>
+
+
+        <div class="comment-list">
+            <h2>Comments</h2>
+            <ul class="list-unstyled">
+                
+
+                
+            </ul>
+        </div>
+
+
+    </section>
+
+            </main>
+            
+            <aside class="col-md-4">
+                <div class="widget widget-recent-posts">
+                    <h3 class="widget-title">近期文章</h3>
+                    
+                    <ul>
+                        
+                            <li>
+                                <a href="http://www.tsunghanyu.com/post/10/">Heroku 快速建立鬼扯LineBot-使用Python</a>
+                            </li>
+                        
+                            <li>
+                                <a href="http://www.tsunghanyu.com/post/9/">Numpy-基本使用筆記</a>
+                            </li>
+                        
+                            <li>
+                                <a href="http://www.tsunghanyu.com/post/8/">Python爬蟲和InfoLite入門介紹</a>
+                            </li>
+                        
+                            <li>
+                                <a href="http://www.tsunghanyu.com/post/7/">Python-日期及時間處理</a>
+                            </li>
+                        
+                            <li>
+                                <a href="http://www.tsunghanyu.com/post/6/">Python爬蟲擷取fb粉絲專頁資訊</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+                <div class="widget widget-archives">
+                    <h3 class="widget-title">日期分類</h3>
+                    
+                    <ul>
+                        
+                            <li>
+                                <a href="http://www.tsunghanyu.com/archives/2017/7/">
+                                    2017 年 7 月
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </div>
+
+                <div class="widget widget-category">
+                    <h3 class="widget-title">文章分類</h3>
+                    
+                    <ul>
+                        
+                            <li>
+                                <a href="http://www.tsunghanyu.com/category/1/">Machine Learning</a>
+                            </li>
+                        
+                            <li>
+                                <a href="http://www.tsunghanyu.com/category/3/">Swift</a>
+                            </li>
+                        
+                            <li>
+                                <a href="http://www.tsunghanyu.com/category/4/">Web Crawler</a>
+                            </li>
+                        
+                            <li>
+                                <a href="http://www.tsunghanyu.com/category/5/">Python</a>
+                            </li>
+                        
+                            <li>
+                                <a href="http://www.tsunghanyu.com/category/6/">ChatBot</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer id="site-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <p class="copyright">Copyright © 2017 TsungHan Yu. All rights reserved</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Mobile Menu -->
+<div class="overlay overlay-hugeinc">
+    <button type="button" class="overlay-close"><span class="ion-ios-close-empty"></span></button>
+    <nav>
+        <ul>
+            <li><a href="http://www.tsunghanyu.com/">Home</a></li>
+            <li><a href="http://www.tsunghanyu.com/">Blog</a></li>
+            <li><a href="http://www.tsunghanyu.com/about">About</a></li>
+            <li><a href="http://www.tsunghanyu.com/">Contact</a></li>
+        </ul>
+    </nav>
+</div>
+
+<script src="./Python_fb_files/script.js"></script>
+
+
+<div id="gtx-trans" style="position: absolute; left: 117px; top: 2884.09px;"><div class="gtx-trans-icon"></div></div></body></html>
