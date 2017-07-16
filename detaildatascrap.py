@@ -45,7 +45,7 @@ end of login to facebook
 '''
 
 pageRes = session.get(personalFbPage)
-pageRes.encoding = "Big5"
+pageRes.encoding = "Big-5"
 
 wr = open('pagesrc5.txt','w')
 wr.write(pageRes.content.__str__())
